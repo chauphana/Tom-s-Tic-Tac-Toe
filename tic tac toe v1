@@ -1,0 +1,122 @@
+//
+//  ViewController.swift
+//  Tic Tac Toe
+//
+//  Created by 90309776 on 9/14/18.
+//  Copyright © 2018 90309776. All rights reserved.
+//
+
+import UIKit
+
+class ViewController: UIViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
+    //@IBOutlet var buttonArrayRow1: [UIButton]!
+    
+    //@IBOutlet var buttonArrayRow2: [UIButton]!
+    
+    //@IBOutlet var buttonArrayRow3: [UIButton]!
+    
+    var playerTurn = 0
+    var indexArray = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
+    @IBOutlet var buttonsArray: [UIButton]!
+    @IBOutlet weak var topLabel: UILabel!
+    
+    @IBAction func buttonFill(_ sender: UIButton) {
+        //let boxNumber = buttonsArray.index(of: sender)
+        if sender.title(for: .normal) == nil {
+            if playerTurn == 0 {
+                sender.setTitle("X", for: .normal)
+                playerTurn = 1
+            } else {
+                sender.setTitle("O", for: .normal)
+                playerTurn = 0
+            }
+            checkwin()
+        }
+    }
+    
+    func checkwin() {
+        //print("\(indexArray[0][2])")
+        for (i, _) in indexArray.enumerated() {
+            /*
+             This if statement nests under the first for loop which is
+             responsible for iterating through every row of the
+             game board (buttonsArray). The if statement checks for if all
+             3 columns of a single row are the same to win the game.
+             buttonsArray[indexArray[row][col]]
+            */
+            if buttonsArray[indexArray[i][0]].title(for: .normal) != nil {
+                if buttonsArray[indexArray[i][0]].title(for: .normal)
+                    == buttonsArray[indexArray[i][1]].title(for: .normal)
+                    && buttonsArray[indexArray[i][1]].title(for: .normal)
+                    == buttonsArray[indexArray[i][2]].title(for: .normal) {
+                    changeLabel(winningSide: buttonsArray[indexArray[i][2]].title(for: .normal)!)
+                    print("row win")
+                }
+            }
+        }
+        for (j, _) in indexArray[0].enumerated() {
+            /*
+             Basically same thing as rows, but for cols
+             buttonsArray[indexArray[row][col]]
+             */
+            if buttonsArray[indexArray[0][j]].title(for: .normal) != nil {
+                if buttonsArray[indexArray[0][j]].title(for: .normal)
+                    == buttonsArray[indexArray[1][j]].title(for: .normal)
+                    && buttonsArray[indexArray[1][j]].title(for: .normal)
+                    == buttonsArray[indexArray[2][j]].title(for: .normal) {
+                    changeLabel(winningSide: buttonsArray[indexArray[0][j]].title(for: .normal)!)
+                    print("col win")
+                }
+            }
+        }
+        
+        if buttonsArray[indexArray[1][1]].title(for: .normal) != nil {
+            if buttonsArray[indexArray[0][0]].title(for: .normal)
+                == buttonsArray[indexArray[1][1]].title(for: .normal)
+                && buttonsArray[indexArray[1][1]].title(for: .normal)
+                == buttonsArray[indexArray[2][2]].title(for: .normal) {
+                changeLabel(winningSide: buttonsArray[indexArray[1][1]].title(for: .normal)!)
+                print("diag 1")
+            }
+            if buttonsArray[indexArray[0][2]].title(for: .normal)
+                == buttonsArray[indexArray[1][1]].title(for: .normal)
+                && buttonsArray[indexArray[1][1]].title(for: .normal)
+                == buttonsArray[indexArray[2][0]].title(for: .normal) {
+                changeLabel(winningSide: buttonsArray[indexArray[1][1]].title(for: .normal)!)
+                print("diag 2")
+            }
+        }
+        
+    }
+    
+    func changeLabel(winningSide side: String) {
+        topLabel.text = side + " wins!"
+        playerTurn = 3
+    }
+    
+    /*
+     Resets the boxes of the game setting them to nil
+    */
+    @IBAction func new2PlayerGame(_ sender: Any) {
+        for (i, row) in indexArray.enumerated() {
+            for (j, _) in row.enumerated() {
+                if  buttonsArray[indexArray[i][j]].title(for: .normal) != nil {
+                    buttonsArray[indexArray[i][j]].setTitle(nil, for: .normal)
+                    playerTurn = 0
+                }
+            }
+        }
+    }
+}
+
